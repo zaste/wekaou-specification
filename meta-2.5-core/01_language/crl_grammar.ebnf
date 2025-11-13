@@ -1,0 +1,47 @@
+(* 
+  CRL Grammar - Coherent Representation Language
+  WEKAOU v2.5 (DRAFT)
+  
+  This is a simplified grammar. Full specification pending.
+*)
+
+(* Top-level statement *)
+statement = triple, [context_block], [mechanism_block], ";" ;
+
+(* Core triple *)
+triple = entity, relation, entity ;
+
+entity = "[", entity_type, ":", entity_id, "]" ;
+entity_type = identifier ;
+entity_id = identifier ;
+
+relation = identifier ;
+
+(* Context block *)
+context_block = "@context", "{", context_properties, "}" ;
+context_properties = { context_property, "," } ;
+context_property = identifier, ":", value ;
+
+(* Mechanism block *)
+mechanism_block = "@mechanism", "{", mechanism_properties, "}" ;
+mechanism_properties = { mechanism_property, "," } ;
+mechanism_property = identifier, ":", value ;
+
+(* Primitives *)
+identifier = letter, { letter | digit | "_" | "-" } ;
+value = string | number | boolean | entity ;
+string = '"', { character }, '"' ;
+number = [ "-" ], digit, { digit }, [ ".", digit, { digit } ] ;
+boolean = "true" | "false" ;
+
+letter = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" |
+         "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" |
+         "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" |
+         "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" ;
+
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+character = letter | digit | " " | "_" | "-" | "." ; (* simplified *)
+
+(* Comments *)
+comment = "//", { character }, newline ;
+block_comment = "/*", { character }, "*/" ;
